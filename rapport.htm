@@ -107,21 +107,27 @@
         Conception du modèle
     </p>
     <ul>
-        <li>Fichiers: <a href="ClassConcept.vpp">Diagramme de classes conceptuelles</a>, <a href="DSS.vpp">Diagrammes de séquence système</a></li>        
-        <li>Le projet DSS.vpp contient tout les DSS, il suffit d'utiliser le navigateur de projet dans la barre de tâches à gauche de la fenêtre de Visual Paradigm ou le "Project Browser" dans le menu "View" de Visual Paradigm</li>
+        <li>Fichiers: <a href="ClassConcept.vpp">Diagramme de classes conceptuelles</a>, <a href="DSS2.vpp">Diagrammes de séquence système</a></li>        
+        <li>Le projet DSS2.vpp contient tout les DSS, il suffit d'utiliser le navigateur de projet dans la barre de tâches à gauche de la fenêtre de Visual Paradigm ou le "Project Browser" dans le menu "View" de Visual Paradigm. Les DSS ont le préfixe "SS" dans leur noms.</li>
     </ul>
     <img src="ClassesConceptuelles.jpg" width="900px" alt="Diagramme de classes conceptuelles" />
     <ul>        
         <li>Nous avions identifié l'Admin et le Client comme des acteurs externes au système, mais, étant donné leurs interactions avec le système, nous avions dû les inclure dans le diagramme sous forme de classes sans attributs.</li>
     </ul>
-    <img src="ClassesConceptuelles.jpg" width="900px" alt="DSS consulter Vols (admin)" />
+    <img src="SS_CreationModif_Admin.jpg" width="900px" alt="DSS création/modification (admin)" />
     <ul>        
-        <li>blah blah</li>
+        <li>Ici, on ilustre de comportement typique du système lors de la création ou la modification d'une instance des différentes classes conceptuelles par l'admin. Le comportement étant très similaire pour beaucoup de classes, nous avons décidé de ne faire qu'un schéma pour les résumer.</li>
     </ul>
-    <img src="ClassesConceptuelles.jpg" width="900px" alt="DSS créer Compagnie Aérienne (admin)" />
+    <img src="SS_Suppression_Admin.jpg" width="900px" alt="DSS Supprimer (Admin)" />
     <ul>        
-        <li>blah blah</li>
+        <li>Ici, on ilustre de comportement typique du système lors de la suppression d'une instance des différentes classes conceptuelles par l'admin. Le comportement étant très similaire pour beaucoup de classes, nous avons décidé de ne faire qu'un schéma pour les résumer.</li>
     </ul>
+    <img src="SS-Consulter Vols.jpg" width="900px" alt="DSS Consulter les vols (Admin)" />
+    <img src="SS-Modifier Réservation.jpg" width="900px" alt="DSS Modifier une réservation" />
+    <img src="SS-Paiement de siège.jpg" width="900px" alt="DSS Payer un siège" />
+    <img src="SS-Réservation.jpg" width="900px" alt="DSS Réserver (Client)" />
+    <img src="SS-Annuler Réservation.jpg" width="900px" alt="DSS Annuler une réservation (Client)" />
+    <img src="SS-Vérification de Vol disponible.jpg" width="900px" alt="DSS Consulter les vols disponibles (Client)" />
     <h3>Contrats</h3>
     <h4>Réserver</h4>        
     <p> Opération:  setReservation(reservation:Reservation)</p>
@@ -168,8 +174,8 @@
         Design du logiciel
     </p>
     <ul>
-        <li>Fichiers: <a href="ClassDiagram.vpp">Diagramme de classes</a>, <a href="DSS.vpp">Diagrammes de séquence</a>, <a href="PackageDiagram.vpp">Diagramme de paquets</a>, <a href="StateDiagram.vpp">Diagrammes d'état (cycle de vie d'un siège)</a></li>        
-        <li>Le projet DSS.vpp contient tout les diagrammes de séquence, il suffit d'utiliser le navigateur de projet dans la barre de tâches à gauche de la fenêtre de Visual Paradigm ou le "Project Browser" dans le menu "View" de Visual Paradigm</li>
+        <li>Fichiers: <a href="ClassDiagram.vpp">Diagramme de classes</a>, <a href="DSS2.vpp">Diagrammes de séquence</a>, <a href="PackageDiagram.vpp">Diagramme de paquets</a>, <a href="StateDiagram.vpp">Diagrammes d'état (cycle de vie d'un siège)</a></li>        
+        <li>Le projet DSS2.vpp contient tout les diagrammes de séquence, il suffit d'utiliser le navigateur de projet dans la barre de tâches à gauche de la fenêtre de Visual Paradigm ou le "Project Browser" dans le menu "View" de Visual Paradigm. Les diagrammes de séquence ont usuellement le préfixe "S-" dans leur nom.</li>
     </ul>
     <img src="DiagrammePaquets.jpg" width="900px" alt="Diagramme de Paquets" />
     <ul>        
@@ -181,7 +187,23 @@
         <p>Les classes du paquet Data (DescriptionVol, Avion, Section, etc.) se partagent le rôle d'expert d'information pour certaines information pour certaines données afin de limiter l'usage de la mémoire/la répétition de données : par exemple, étant donné que tous les siège d'une section ont le même tarif, la donnée de "tarif" est contenue uniquement dans les instances de la classe Section. Ceci permet une certaine cohésion entre les classes ordonnées de cette façon (par exemple: Compagnie, Avion, Section, Siege, Reservation et Confirmation).</p>
         <p>Pour maintenir ce genre "d'hierarchie", les classes du paquet Data ont la responsabilité de créateur d'instance pour les classes directement en-dessous d'elles dans l'hierarchie: par exemple, DescriptionVol est le créateur des instances de la classe Vol -car DescriptionVol décrit plusieurs Vols, et, ainsi les "contient" du point de vue design-, Avion est le créateur des instances de Section -Évidemment, l'avion contient des sections-.</p></li>
     </ul>
-    <img src="ClassesConceptuelles.jpg" width="900px" alt="Diagramme de séquence" />
+    <img src="S-Annuler Reservation.jpg" width="900px" alt="Diagramme de séquence: annulation d'une réservation" />
+    <ul>        
+        <li>justification1</li>
+    </ul>
+    <img src="S-Modifier Reservation.jpg" width="900px" alt="Diagramme de séquence: modification d'une réservation" />
+    <ul>        
+        <li>justification2</li>
+    </ul>
+    <img src="S-Payer une siège.jpg" width="900px" alt="Diagramme de séquence: paiement d'une réservation/siège" />
+    <ul>        
+        <li>blah blah</li>
+    </ul>
+    <img src="S-Réserver un siège.jpg" width="900px" alt="Diagramme de séquence: annulation d'une réservation" />
+    <ul>        
+        <li>blah blah</li>
+    </ul>
+    <img src="S-Vérification des vols disponible.jpg" width="900px" alt="Diagramme de séquence: annulation d'une réservation" />
     <ul>        
         <li>blah blah</li>
     </ul>
