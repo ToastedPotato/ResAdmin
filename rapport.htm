@@ -189,24 +189,15 @@
     </ul>
     <img src="S-Annuler Reservation.jpg" width="900px" alt="Diagramme de séquence: annulation d'une réservation" />
     <ul>        
-        <li>justification1</li>
+        <li>Pour  les diagrammes de séquence la database est le centre de contrôle des données. Elle communique avec le contrôleur et la vue (view),C’est à partir de celle-ci qu’on peut faire des recherches, obtenir des informations et les modifier.Ainsi tous les actions qu’effectueront les utilisateurs causeront des changements dans la base de données. Les autres classes participeront au modifications des informations retenues.</li>
     </ul>
     <img src="S-Modifier Reservation.jpg" width="900px" alt="Diagramme de séquence: modification d'une réservation" />
     <ul>        
-        <li>justification2</li>
+        <li>Pour la modification de la réservation,on se rend compte qu’on doit vérifier la disponibilité d’un nouveau vol et annuler la présente reservation du présent siège pour l’associer à un autre. On peut donc  réutiliser les diagrammes que nous avons déjà fait.</li>
     </ul>
     <img src="S-Payer une siège.jpg" width="900px" alt="Diagramme de séquence: paiement d'une réservation/siège" />
-    <ul>        
-        <li>blah blah</li>
-    </ul>
     <img src="S-Réserver un siège.jpg" width="900px" alt="Diagramme de séquence: annulation d'une réservation" />
-    <ul>        
-        <li>blah blah</li>
-    </ul>
     <img src="S-Vérification des vols disponible.jpg" width="900px" alt="Diagramme de séquence: annulation d'une réservation" />
-    <ul>        
-        <li>blah blah</li>
-    </ul>
     <img src="SiegeDiagrammeEtat.jpg" width="900px" alt="Diagramme d'état (cycle de vie d'un siège)" />
     <ul>        
         <li>Plusieurs actions de transition demandent une vérification de la date de réservation ou de la date de départ du vol afin de prévenir les interaction avec le siège moins de 24 heures avant le départ. Ici, l'action "vérouillage" indique que le statut du siège est maintenant fixe et ne peut plus est modifié par le client.</li>
