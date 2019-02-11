@@ -1,0 +1,209 @@
+
+<html>
+<head>
+    <title>IFT3911 DM1</title>
+    <style type="text/css">
+        table
+        {
+            border: outset 2px black;
+            border-collapse: collapse;
+        }
+        th
+        {
+            border-bottom: double 2px black;
+        }
+        td
+        {
+            border-bottom: solid 1px black;
+        }
+        .first_col
+        {
+            border-right: double 2px black;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">
+        IFT 3911 - Devoir 1</h1>
+    <h2>
+        Information générale</h2>
+    <p>
+        <span style="font-weight: bold;">Nom: </span>Christophe Apollon-Roy
+        <br />
+        <span style="font-weight: bold;">Matricule: </span>920403
+        <br />
+        <span style="font-weight: bold;">Courriel: </span>christophe_apollon@protonmail.com
+        <br />
+        <span style="font-weight: bold;">temps mis: </span>30 heures
+    </p>
+    <p>
+        <span style="font-weight: bold;">Nom: </span>Fahirah Diarra
+        <br />
+        <span style="font-weight: bold;">Matricule: </span>20034025
+        <br />
+        <span style="font-weight: bold;">Courriel: </span>fahirah.diarra@gmail.com
+        <br />
+        <span style="font-weight: bold;">temps mis: </span>30 heures
+    </p>
+    <h2>
+        Distribution des tâches</h2>
+    <p>
+        <span style="font-weight: bold;">Soumetteur: </span>Christophe Apollon-Roy
+    </p>
+    <table cellpadding="7px">
+        <thead>
+            <tr>
+                <th class="first_col">
+                    Tâche
+                </th>
+                <th>
+                   Christophe
+                </th>
+                <th>
+                    Fahirah
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="first_col">
+                    Conception du domaine
+                </td>
+                <td>
+                    Diagramme de classes conceptuelles, contrats (50%)
+                </td>
+                <td>
+                    Diagrammes de séquence système (50%)
+                </td>
+            </tr>
+            <tr>
+                <td class="first_col">
+                    Design du logiciel
+                </td>
+                <td>
+                    Diagramme de classes, contraintes OCL, diagramme de paquet, diagramme d'état du siège (50%)
+                </td>
+                <td>
+                    Diagrammes de séquence (50%)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>
+        Hypothèses</h2>
+    <p>
+        Nous avons supposé que le système serait constitué d'une interface interagissant avec l'usager (client ou admin) pour accéder à une base 
+        de données.        
+        Nous avons supposé que chaque compagnie aérienne a au moins un avion dans sa flotte.        
+        Nous avons supposé que toute section d'un avion est non-vide (conformément à l'énoncé, un avion peut ne pas avoir de sections par 
+        contre). 
+        Nous avons supposé qu'il n'y a qu'un seul avion effectuant un certain vol à une certaine heure (exemple, le vol LEET1337, disponible à 
+        13h, 16h, et 22h est effectué par l'avion GIT1 à 13h, GUD2 à 16h et SCRUB3 à 22h).
+        Nous avons supposé que le système limite le nombre de réservations non payées à une par client.
+    </p>
+    <h2>
+        Tâche 1</h2>
+    <p>
+        Conception du modèle
+    </p>
+    <ul>
+        <li>Fichiers: <a href="ClassConcept.vpp">Diagramme de classes conceptuelles</a>, <a href="DSS.vpp">Diagrammes de séquence système</a></li>        
+        <li>Le projet DSS.vpp contient tout les DSS, il suffit d'utiliser le navigateur de projet dans la barre de tâches à gauche de la fenêtre de Visual Paradigm ou le "Project Browser" dans le menu "View" de Visual Paradigm</li>
+    </ul>
+    <img src="ClassesConceptuelles.jpg" width="900px" alt="Diagramme de classes conceptuelles" />
+    <ul>        
+        <li>Nous avions identifié l'Admin et le Client comme des acteurs externes au système, mais, étant donné leurs interactions avec le système, nous avions dû les inclure dans le diagramme sous forme de classes sans attributs.</li>
+    </ul>
+    <img src="ClassesConceptuelles.jpg" width="900px" alt="DSS consulter Vols (admin)" />
+    <ul>        
+        <li>blah blah</li>
+    </ul>
+    <img src="ClassesConceptuelles.jpg" width="900px" alt="DSS créer Compagnie Aérienne (admin)" />
+    <ul>        
+        <li>blah blah</li>
+    </ul>
+    <h3>Contrats</h3>
+    <h4>Réserver</h4>        
+    <p> Opération:  setReservation(reservation:Reservation)</p>
+    <p> référence:  réserver un siège</p>
+    <p> Préconditions:  
+    <p>-le siège est libre (siege.reservation == null)</p>
+    <p>-il reste au moins 24h avant le départ (Vol.dateHeureDepart - new DateTime() >= (24*60*60) secondes)</p>
+    <p> Postcontidions:</p>
+    <p>-le siège est réservé pour 24 heures (siege.reservation != null)</p>
+    <p>-une instance de réservation est créee (new Reservation(idVol:string, numeroVol:int, priorite:string))</p>
+    <p>-la réservation est ajoutée à la liste de réservations dans Database</p>
+    <h4>Paiement</h4>        
+    <p> Opération:  setConfirmation(confirmation:Confirmation)</p>
+    <p> référence:  payer un siège</p>
+    <p> Préconditions:  
+    <p>-le siège est réservé (siege.reservation != null)</p>
+    <p>-le Client à l numéro de réservation conrrespondant</p>
+    <p>-il reste au moins 24h avant le départ (Vol.dateHeureDepart - new DateTime() >= (24*60*60) secondes)</p>
+    <p>-la réservation (et, par extension, le siège) n'a pas encore été payée (reservation.getConfirmation() == null)</p>
+    <p> Postcontidions:</p>
+    <p>-une instance de confirmation est crée (new Confirmation(modePaiement:string, infoClient:string))</p>
+    <p>-la réservation a été payée (reservation.getConfirmation() != null)</p>
+    <h4>Annuler</h4>        
+    <p> Opération:  cancelReservation()</p>
+    <p> référence:  annuler une réservation</p>
+    <p> Préconditions:  
+    <p>-le siège est réservé (siege.reservation != null)</p>
+    <p>-il reste au moins 24h avant le départ (Vol.dateHeureDepart - new DateTime() >= (24*60*60) secondes)</p>
+    <p> Postcontidions:</p>
+    <p>-le siège est de nouveau libre (siege.reservation == null)</p>
+    <p>-l'instance de réservation n'est plus référencée dans database.listeReservation</p>
+    <h4>Modifier réservation</h4>        
+    <p> Opération:  cancelReservation() suivi de setReservation(reservation:Reservation)</p>
+    <p> référence:  modifier une réservation, annuler une réservation</p>
+    <p> Préconditions:  
+    <p>-le siège est réservé (siege.reservation != null)</p>
+    <p>-il reste au moins 24h avant le départ (Vol.dateHeureDepart - new DateTime() >= (24*60*60) secondes)</p>
+    <p> Postcontidions:</p>
+    <p>-le siège est de nouveau libre (siege.reservation == null)</p>
+    <p>-l'instance de réservation est mise à jour et associée à un nouveau siège (siege2.reservation != null)</p>
+    
+    <h2>Tâche 2</h2>
+    <p>
+        Design du logiciel
+    </p>
+    <ul>
+        <li>Fichiers: <a href="ClassDiagram.vpp">Diagramme de classes</a>, <a href="DSS.vpp">Diagrammes de séquence</a>, <a href="PackageDiagram.vpp">Diagramme de paquets</a>, <a href="StateDiagram.vpp">Diagrammes d'état (cycle de vie d'un siège)</a></li>        
+        <li>Le projet DSS.vpp contient tout les diagrammes de séquence, il suffit d'utiliser le navigateur de projet dans la barre de tâches à gauche de la fenêtre de Visual Paradigm ou le "Project Browser" dans le menu "View" de Visual Paradigm</li>
+    </ul>
+    <img src="DiagrammePaquets.jpg" width="900px" alt="Diagramme de Paquets" />
+    <ul>        
+        <li>Conformément à notre hypothèse, nous avons décidé de séparer le système en 2 paquets: le paquet interface chargé principalement de gérer les interactions avec l'usager (l'acteur) et le paquet Data contenant uniquement des données (prix, réservations, confirmations de paiements, etc.) afin de partager le mieux possible les responsabilités de contrôleur et d'expert d'information: les classes Control et Database se partagent la responsabilité de contrôleur et les classes du paquet Data se partagent la responsabilité d'expert d'information.</li>
+    </ul>
+    <img src="DiagrammedeClasses.jpg" width="900px" alt="Diagramme de Classes" />
+    <ul>        
+        <li><p>Malheureusement, nous avons dû introduire un certain couplage entre certaines classes (surtout Database, par exemple). Database doit pouvoir correctement déléguer les tâches de recherche d'information et de création/modification/suppression d'instances de classes, ainsi cette connexion aux autres classes est nécessaire.</p>  
+        <p>Les classes du paquet Data (DescriptionVol, Avion, Section, etc.) se partagent le rôle d'expert d'information pour certaines information pour certaines données afin de limiter l'usage de la mémoire/la répétition de données : par exemple, étant donné que tous les siège d'une section ont le même tarif, la donnée de "tarif" est contenue uniquement dans les instances de la classe Section. Ceci permet une certaine cohésion entre les classes ordonnées de cette façon (par exemple: Compagnie, Avion, Section, Siege, Reservation et Confirmation).</p>
+        <p>Pour maintenir ce genre "d'hierarchie", les classes du paquet Data ont la responsabilité de créateur d'instance pour les classes directement en-dessous d'elles dans l'hierarchie: par exemple, DescriptionVol est le créateur des instances de la classe Vol -car DescriptionVol décrit plusieurs Vols, et, ainsi les "contient" du point de vue design-, Avion est le créateur des instances de Section -Évidemment, l'avion contient des sections-.</p></li>
+    </ul>
+    <img src="ClassesConceptuelles.jpg" width="900px" alt="Diagramme de séquence" />
+    <ul>        
+        <li>blah blah</li>
+    </ul>
+    <img src="SiegeDiagrammeEtat.jpg" width="900px" alt="Diagramme d'état (cycle de vie d'un siège)" />
+    <ul>        
+        <li>Plusieurs actions de transition demandent une vérification de la date de réservation ou de la date de départ du vol afin de prévenir les interaction avec le siège moins de 24 heures avant le départ. Ici, l'action "vérouillage" indique que le statut du siège est maintenant fixe et ne peut plus est modifié par le client.</li>
+    </ul>
+    <h3>Contraintes OCL</h3>
+    <h4>L'aéroport de départ et d'arrivée sont différents</h4>        
+    <p>context DescriptionVol inv:<br/>self.getAeroportDepart() <> self.getAeroportArrivee()</p>
+    <h4>La partie alphabétique de l'ID d'un vol est unique à chaque compagnie et la partie numérique est unique à chaque vol au sein de la même compagnie.</h4>        
+    <p>context Database inv:<br/>self.Compagnie->isUnique(Compagnie.DescriptionVol->orderedBy(self.Compagnie.DescriptionVol.numero)->first().id)</p>
+    <p>/*on confirme que le premier élément dans la liste de descriptions de Vols de chaque compagnie a un ID alphabétique unique*/</p>
+    <p>context Compagnie inv:<br/>def: first:string = self.DescriptionVol->orderedBy(self.DescriptionVol.numero)->first()<br/>self.DescriptionVol.id->excluding(first.id)->size() = 0</p>
+    <p>/*on confirme ensuite qu'au sein d'une même compagnie, toutes les descriptions de vol partagent le même ID alphabétique, ceci, combiné avec la contraite que le premier élément DescriptionVol.id de chaque Compagnie soit unique permet d'implémenter la contrainte "la partie alphabétique de l'ID d'un vol est unique à chaque compagnie"*/</p>
+    <p>context Compagnie inv:<br/>self.DescriptionVol->isUnique(numero)</p>
+    <p>/*Ici, on confirme qu'au sein d'une même compagnie toutes les descriptions de vol ont un numéro unique*/</p>
+    <h4>Tous les sièges d'une même section ont le même prix dans la même compagnie</h4>        
+    <p>Ici, nul besoin de faire une contrainte OCL; le design de nos classe et de notre domaine confirme cette contraite par défaut; étant donné que la donnée "tarif" est stockée uniquement dans l'instance section englobant toutes les instances siege qui lui sont associées, il est impossible pour une section de contenir un siege avec une valeur "tarif" différente. De plus, il n'y a que 4 types de "tarifs" (modifiant le prix de la Compagnie), chacun associé à un type de section spécifique, assurant que toutes les sections de même type ont le même "tarif".</p>
+    <h4>Réserver ne peut se faire que pour un siège libre. Identifiez la postcondition de l'opération réserver()</h4>        
+    <p>context siege::setReservation(reservation:Reservation)<br/>pre: self.Reservation->size() = 0<br/>post: self.Reservation->size() = 1</p>
+    <p>/*Dans la ligne de précondition, on vérifie que l'ensemble siege.Reservation est vide; ainsi qu'il n'y a pas d'instance réservation attachée au siège. Celui-ci est ainsi considéré libre. Dans la postcondition, on confirme qu'il n'y a qu'une seule instance de réservation attachée à un siège: un seul client pour un siège.*/</p>
+</body>
+</html>
+
