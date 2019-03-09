@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>IFT3911 DM1</title>
+    <title>IFT3911 DM2</title>
     <style type="text/css">
         table
         {
@@ -23,7 +23,7 @@
 </head>
 <body>
     <h1 style="text-align: center;">
-        IFT 3911 - Devoir 1</h1>
+        IFT 3911 - Devoir 2</h1>
     <h2>
         Information générale</h2>
     <p>
@@ -31,18 +31,18 @@
         <br />
         <span style="font-weight: bold;">Matricule: </span>920403
         <br />
-        <span style="font-weight: bold;">Courriel: </span>christophe_apollon@protonmail.com
+        <span style="font-weight: bold;">Courriel: </span>christophe.apollon-roy@umontreal.ca
         <br />
-        <span style="font-weight: bold;">temps mis: </span>30 heures
+        <span style="font-weight: bold;">temps mis: </span>36 heures
     </p>
     <p>
         <span style="font-weight: bold;">Nom: </span>Fahirah Diarra
         <br />
         <span style="font-weight: bold;">Matricule: </span>20034025
         <br />
-        <span style="font-weight: bold;">Courriel: </span>fahirah.diarra@gmail.com
+        <span style="font-weight: bold;">Courriel: </span>fahirah-baba-muaka.diarra@umontreal.ca
         <br />
-        <span style="font-weight: bold;">temps mis: </span>30 heures
+        <span style="font-weight: bold;">temps mis: </span>36 heures
     </p>
     <h2>
         Distribution des tâches</h2>
@@ -66,24 +66,24 @@
         <tbody>
             <tr>
                 <td class="first_col">
-                    Conception du domaine
+                    Design du logiciel
                 </td>
                 <td>
-                    Diagramme de classes conceptuelles, contrats (50%)
+                    Diagramme de classes, Diagramme de paquets (50%)
                 </td>
                 <td>
-                    Diagrammes de séquence système (50%)
+                    Diagrammes de séquence (50%)
                 </td>
             </tr>
             <tr>
                 <td class="first_col">
-                    Design du logiciel
+                    Justification du design
                 </td>
                 <td>
-                    Diagramme de classes, contraintes OCL, diagramme de paquet, diagramme d'état du siège (50%)
+                    Rapport, contraintes OCL (50%)
                 </td>
                 <td>
-                    Diagrammes de séquence (50%)
+                    Rapport, contraintes OCL (50%)
                 </td>
             </tr>
         </tbody>
@@ -93,25 +93,23 @@
     <p>
         Nous avons supposé que le système serait constitué d'une interface interagissant avec l'usager (client ou admin) pour accéder à une base 
         de données.        
-        Nous avons supposé que chaque compagnie aérienne a au moins un avion dans sa flotte.        
-        Nous avons supposé que toute section d'un avion est non-vide (conformément à l'énoncé, un avion peut ne pas avoir de sections par 
-        contre). 
-        Nous avons supposé qu'il n'y a qu'un seul avion effectuant un certain vol à une certaine heure (exemple, le vol LEET1337, disponible à 
-        13h, 16h, et 22h est effectué par l'avion GIT1 à 13h, GUD2 à 16h et SCRUB3 à 22h).
+        Nous avons supposé que chaque distributeur a au moins un véhicule de transport (avion, train ou paquebot)dans sa flotte.        
+        Nous avons supposé que toute section d'un véhicule de transport est non-vide. 
+        Nous avons supposé qu'il n'y a qu'un seul véhicule de transport effectuant un certain voyage à une certaine heure (exemple, le vol LEET1337, disponible à 13h, 16h, et 22h est effectué par l'avion GIT1 à 13h, GUD2 à 16h et SCRUB3 à 22h).
         Nous avons supposé que le système limite le nombre de réservations non payées à une par client.
     </p>
     <h2>
         Tâche 1</h2>
     <p>
-        Conception du modèle
+        Design du logiciel
     </p>
     <ul>
-        <li>Fichiers: <a href="ClassConcept.vpp">Diagramme de classes conceptuelles</a>, <a href="DSS2.vpp">Diagrammes de séquence système</a></li>        
-        <li>Le projet DSS2.vpp contient tout les DSS, il suffit d'utiliser le navigateur de projet dans la barre de tâches à gauche de la fenêtre de Visual Paradigm ou le "Project Browser" dans le menu "View" de Visual Paradigm. Les DSS ont le préfixe "SS" dans leur noms.</li>
+        <li>Fichiers: <a href="ClassDiagram.vpp">Diagramme de classes</a>, <a href="DSS2_part2.vpp">Diagrammes de séquence</a>, <a href="PackageDiagram.vpp">Diagramme de paquets</a></li>        
+        <li>Le projet DSS2_part2.vpp contient tout les Diagrammes de séquence, il suffit d'utiliser le navigateur de projet dans la barre de tâches à gauche de la fenêtre de Visual Paradigm ou le "Project Browser" dans le menu "View" de Visual Paradigm.</li>
     </ul>
-    <img src="ClassesConceptuelles.jpg" width="900px" alt="Diagramme de classes conceptuelles" />
+    <img src="DiagrammedeClasse.jpg" width="900px" alt="Diagramme de classes" />
     <ul>        
-        <li>Nous avions identifié l'Admin et le Client comme des acteurs externes au système, mais, étant donné leurs interactions avec le système, nous avions dû les inclure dans le diagramme sous forme de classes sans attributs.</li>
+        <li>Les parties réutilisables sont les classes suivantes: View, Control, InterfaceUsager, OutilsAdmin, Destination, Distributeur, Parcours, Voyage, Transport, Section, Place, Réservation, Confirmation.</li>
     </ul>
     <img src="SS_CreationModif_Admin.jpg" width="900px" alt="DSS création/modification (admin)" />
     <ul>        
