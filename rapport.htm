@@ -161,10 +161,17 @@
     <h4>*sous-section si besoin*</h4>        
     <p>*blah blah blah*</p>
     <h3>Fardeau</h3>
-    <h4>*sous-section si besoin*</h4>        
-    <p>*blah blah blah*</p>
+    <h4>Calculs</h4>        
+    <p>Étant donné que la classe dateTime est essentiellement un timestamp qui nous est fourni par l'API JodaTime, nous la considérerons comme une classe de fondation pour nos besoins. Étant donné que la majorité des sous-classes définies ne diffèrent pas grandement de leurs classe mère, nous nous en sommes tenus aux classes mères et les classes réutilisables par d'autres systèmes de réservation pour le calcul, par rester bref.</p>
+    <ul>
+    <li><p>Domaine de fondation <br/> F(int) = 0 <br/> F(String) = 0 <br/> F(dateTime) = 0</p></li>
+    <li><p>Domaine d'architecture <br/> F(View) = |{String}| = 1</p></li>
+    <li><p>Domaine de métier <br/> F(Destination) = |{String}| = 1 <br/> F(Confirmation) = |{String}| = 1 <br/> F(Reservation) = F(confirmation)+|{Confirmation, String, int, dateTime}| = 5 <br/> F(Place) = F(Reservation) + |{Reservation}| = 6 <br/> F(Section) = F(Place) + |{Place, int}| = 8 <br/> F(transport) = F(Section) + |{section, int}| = 10 <br/> F(Voyage) = F(Transport) + |{Transport, int}| = 12 <br/> F(Parcours) = F(Voyage) + F(Destination) + |{Voyage, Destination, int, String}| = 17 <br/> F(Distributeur) = F(Parcours) + F(Transport) + |{Parcours, Transport, int, String}| = 31 </p></li>
+    <li>Domaine d'application <br/> F(InterfaceUsager) = F(Distributeur) + F(Destination) + F(Reservation) + F(View) + |{Distribution, Destination, Reservation, View}| = 42 <br/> F(Control) = F(InterfaceUsager) + |{InterfaceUsager}| = 43</li>
+    </ul>
+    <p>Nous pouvons constater que plus on s'éloigne du domaine de fondation et qu'on s'approche du domaine d'application, plus le fardeau augmente, ce qui nous permet de conclure que le fardeau est bien réparti à travers les domaines.</p>    
     <h3>Graphe IA</h3>
-    <img src="AnnulerReservation.jpg" width="900px" alt="Diagramme de séquence d'Annulation de Réservation" />
+    <img src="DiagrammeIA.jpg" width="900px" alt="Diagramme de séquence d'Annulation de Réservation" />
     <h4>calculs</h4>        
     <ul>
     <li>Destination: 4 classes dans Compagnie et 2 dans Interface en dépendent donc I = 0/(4+2) = 0, A = 0 car Destination n'a aucune classe abstraite</li>
@@ -173,7 +180,7 @@
     <li>Interface: possède 2 classes dépendant d'autres paquets donc I = 2/2 = 1, A = 0 car Compagnie n'a aucune classe abstraite</li>
     </ul>
     <h4>Discussion du graphe</h4>
-    <p>Notre paquet Interface est idéal comme point d'entrée du programme (méthode main) car sa valeur de Distance est 0 et sa valeur A est 0; c'est ce qu'on veut vu qu'Interface doit se charger des interactions avec l'usager. Compagnie s'approche aussi de cet "idéal" avec une valeur D de 0.22 et A = 0. Par contre Reservation et Destination sont loin d'être idéaux avec leur valeurs D de 1 et A de 0. Ceci est probablement causé par le fait que les classes de ces paquets sont instantiables, par souci de réutilisabilité sans aucune extension (nous voulions un programme "usable right out of the box").</p>
+    <p>Notre paquet Interface est idéal comme point d'entrée du programme (méthode main) car sa valeur de Distance est 0 et sa valeur A est 0; c'est ce qu'on veut vu qu'Interface doit se charger des interactions avec l'usager. Compagnie s'approche aussi de cet "idéal" avec une valeur D de 0.22 et A = 0. Par contre Reservation et Destination sont loin d'être idéaux avec leur valeurs D de 1 et A de 0. Ceci est probablement causé par le fait que les classes de ces paquets sont instantiables, par souci de réutilisabilité sans aucune extension (nous voulions un programme "usable right out of the box"). Extraire une interface des classes mère dans ces 2 paquets aurait peut-être pu alléger ce problème.</p>
     <h3>Application des principes de conception</h3>
     <h4>Application des principes SOLID</h4>        
     <ul>
