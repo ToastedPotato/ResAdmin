@@ -69,7 +69,7 @@
                     Design du logiciel
                 </td>
                 <td>
-                    Diagramme de classes, Diagramme de paquets (50%), contraintes OCL
+                    Diagramme de classes, Diagramme de paquets, contraintes OCL (50%)
                 </td>
                 <td>
                     Diagrammes de séquence (50%)
@@ -93,7 +93,7 @@
     <p>
         Nous avons supposé que le système serait constitué d'une interface interagissant avec l'usager (client ou admin) pour accéder à une base 
         de données.        
-        Nous avons supposé que chaque distributeur a au moins un véhicule de transport (avion, train ou paquebot)dans sa flotte.        
+        Nous avons supposé que chaque distributeur a au moins un véhicule de transport (avion, train ou paquebot) dans sa flotte.        
         Nous avons supposé que toute section d'un véhicule de transport est non-vide. 
         Nous avons supposé qu'il n'y a qu'un seul véhicule de transport effectuant un certain voyage à une certaine heure (exemple, le vol LEET1337, disponible à 13h, 16h, et 22h est effectué par l'avion GIT1 à 13h, GUD2 à 16h et SCRUB3 à 22h).
         Nous avons supposé que le système limite le nombre de réservations non payées à une par client.
@@ -106,11 +106,14 @@
     </p>
     <ul>
         <li>Fichiers: <a href="ClassDiagram.vpp">Diagramme de classes</a>, <a href="DSS2_part2.vpp">Diagrammes de séquence</a>, <a href="PackageDiagram.vpp">Diagramme de paquets</a></li>        
-        <li>Le projet DSS2_part2.vpp contient tout les Diagrammes de séquence, il suffit d'utiliser le navigateur de projet dans la barre de tâches à gauche de la fenêtre de Visual Paradigm ou le "Project Browser" dans le menu "View" de Visual Paradigm.</li>
+        <li>Le projet DSS2_part2.vpp contient tous les diagrammes de séquence, il suffit d'utiliser le navigateur de projet dans la barre de tâches à gauche de la fenêtre de Visual Paradigm ou le "Project Browser" dans le menu "View" de Visual Paradigm.</li>
     </ul>
     <img src="DiagrammedeClasses.jpg" width="900px" alt="Diagramme de classes" />
     <ul>        
-        <li>Les parties réutilisables sont les classes suivantes: View, Control, InterfaceUsager, OutilsAdmin, Destination, Distributeur, Parcours, Voyage, Transport, Section, Place, Réservation, Confirmation. Ils contiennent les attributs et méthodes de base pour pouvoir gérer les réservation pour un système de transport quelconque.</li>
+        <li>Les parties réutilisables sont les classes suivantes: View, Control, InterfaceUsager, OutilsAdmin, Destination, Distributeur, Parcours, Voyage, Transport, Section, Place, Réservation, Confirmation. Ils contiennent les attributs et méthodes de base pour pouvoir gérer les réservation pour un système de transport quelconque. Idéalement, il aurait fallu extraire des interfaces de ces classes, mais nous voulions que notre programme soit réutilisable au point d'être exécutable et utilisable pour un autre système de réservation sans aucune modification des parties réutilisables.</li>
+        <li>Étant donné que le système doit interagir avec un usager et imprimer des informations à l'écran, nous avons décidé d'implémenter un modèle MVC rudimentaire: View se charge d'afficher de l'affichage, Control reçoit les entrées de l'usager et délègue le traitement de l'entrée à la méthode/au module approprié et InterfaceUsager (avec sa sous-classe OutilsAdmin) fait office de modèle et contient toutes les méthodes et données requises pour répondre aux besoins de l'usager.</li>
+        <li>Selon les besoins du DM2, les itinéraires de paquebot et les trajets de train sont structurellement et fonctionnellement identiques, donc il semblerait mieux d'utiliser une seule classe "Itinéraire" pour représenter les itinéraires de paquebots et les itinéraires de train au lieu de nos 2 classes "DescriptionCroisiere" et "DescriptionTrajet". Par contre, selon nous, la distinction est importante pour s'assurer que les instances liées aux itinéraires de croisières ne contiennent que des instances liées aux croisières (paquebot, etc), et de même pour les itinéraires de train.</li>
+        <li>Veuillez noter que, par souçi d'une utilisation efficace de la mémoire dans l'implémentation future, au lieu de stocker chaque information du client dans un attribut string différent dans Confirmation, nous avons décidé de les concaténer en un seul objet String (infoClient) où chaque information est délimitée par un séparateur. Pour récuperer une information spécifique, il suffit d'appeler la méthode split sur la String et accéder au tableau de string généré.</li>
     </ul>
     <img src="DiagrammePaquets.jpg" width="900px" alt="Diagramme de Paquets" />
     <ul>        
@@ -157,19 +160,22 @@
     <p>
         Qualité du design
     </p>
-    <h3>Couplage et Cohésion</h3>
-    <h4>*sous-section si besoin*</h4>        
-    <p>*blah blah blah*</p>
+    <h3>Couplage et Cohésion</h3>   
+    <ul>
+    <li>En général, le design introduit du couplage seulement lorsque c'est absolument nécéssaire. En effet, la majorité des cas de couplage sont des cas de couplage par données (par exemple, Reservation recoit uniquement les données spécifiques de Distributeur et Parcours qu'elle a besoin lors de son instanciation) ou couplage par paquet (ex.: Voyage contient comme attribut une instance de Transport, lui donnant possiblement accès à toutes ses données, Place.setReservation prend en paramètre une instance de Reservation). Étant donné l'usage du modèle MVC par note design, nous n'avions pas le choix d'introduire du couplage par contrôle entre Control, View et InterfaceUsager pour gérer correctement les besoins de l'usager.</li>
+    <li>Notre design a une forte cohésion de classes car les attributs de celles-ci sont toujours des classes qui leur sont intrinsèques et de même domaine (par exemple, Distributeur a comme attributs une liste de Transports et de Parcours qui lui sont intrinsèques et ces 3 classes font toutes parties du domaine de métier). La seule exception à cela est la classe InterfaceUsager (domaine application) qui contient comme attributs une instance de View (domaine architecture) et des listes de Destinations, Parcours et Reservations (domaine métier). Par contre, à cause du modèle MVC, View est intrinsèque à InterfaceUsager (le Modèle doit pouvoir mettre à jour la Vue), de même pour Destination, Parcours et Distributeur car elles représentent les données que le Modèle doit manipuler, donc, malgré les apparence, InterfaceUsager ne présente fait pas l'erreur d'avoir de la cohésion de domaine ou de rôle mixtes.</li>
+    <li></li>
+    </ul>
     <h3>Fardeau</h3>
     <h4>Calculs</h4>        
-    <p>Étant donné que la classe dateTime est essentiellement un timestamp qui nous est fourni par l'API JodaTime, nous la considérerons comme une classe de fondation pour nos besoins. Étant donné que la majorité des sous-classes définies ne diffèrent pas grandement de leurs classe mère, nous nous en sommes tenus aux classes mères et les classes réutilisables par d'autres systèmes de réservation pour le calcul, par rester bref.</p>
+    <p>Étant donné que la classe dateTime est essentiellement un timestamp qui nous est fourni par l'API JodaTime, nous la considérerons comme une classe de fondation pour nos besoins. Étant donné que la majorité des sous-classes définies ne diffèrent pas grandement de leurs classe mère (dans la majorité des cas elles ne font qu'ajouter un attribut appartenant au domaine de fondation), nous nous en sommes tenus aux classes mères et les classes réutilisables par d'autres systèmes de réservation pour le calcul, par rester bref.</p>
     <ul>
     <li><p>Domaine de fondation <br/> F(int) = 0 <br/> F(String) = 0 <br/> F(dateTime) = 0</p></li>
     <li><p>Domaine d'architecture <br/> F(View) = |{String}| = 1</p></li>
     <li><p>Domaine de métier <br/> F(Destination) = |{String}| = 1 <br/> F(Confirmation) = |{String}| = 1 <br/> F(Reservation) = F(confirmation)+|{Confirmation, String, int, dateTime}| = 5 <br/> F(Place) = F(Reservation) + |{Reservation}| = 6 <br/> F(Section) = F(Place) + |{Place, int}| = 8 <br/> F(transport) = F(Section) + |{section, int}| = 10 <br/> F(Voyage) = F(Transport) + |{Transport, int}| = 12 <br/> F(Parcours) = F(Voyage) + F(Destination) + |{Voyage, Destination, int, String}| = 17 <br/> F(Distributeur) = F(Parcours) + F(Transport) + |{Parcours, Transport, int, String}| = 31 </p></li>
     <li>Domaine d'application <br/> F(InterfaceUsager) = F(Distributeur) + F(Destination) + F(Reservation) + F(View) + |{Distribution, Destination, Reservation, View}| = 42 <br/> F(Control) = F(InterfaceUsager) + |{InterfaceUsager}| = 43</li>
     </ul>
-    <p>Nous pouvons constater que plus on s'éloigne du domaine de fondation et qu'on s'approche du domaine d'application, plus le fardeau augmente, ce qui nous permet de conclure que le fardeau est bien réparti à travers les domaines.</p>    
+    <p>Nous pouvons constater que plus on s'éloigne du domaine de fondation et qu'on s'approche du domaine d'application, plus le fardeau augmente, ce qui nous permet de conclure que le fardeau est bien réparti à travers les domaines, ce qui est une bonne indication que notre design .</p>    
     <h3>Graphe IA</h3>
     <img src="DiagrammeIA.jpg" width="900px" alt="Diagramme de séquence d'Annulation de Réservation" />
     <h4>calculs</h4>        
