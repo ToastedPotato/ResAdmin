@@ -100,6 +100,7 @@
         Étant donné que ce n'était pas spécifié, nous avons assumé qu'un client a jusqu'à 24h avant le départ pour réserver une place dans un voyage.
         Nous avons supposé que, comme tout bon système de réservation/achat en ligne, que le client peut utiliser le système et réserver/payer une place sans s'authentifier ou s'inscrire.
         Nous avons supposé que l'administrateur doit s'authentifer pour avoir accès aux fonction d'administration et que seul l'administrateur peut avoir accès aux fonctions d'administration (création/modification/suppression de destination, distributeurs, itinéraires).
+        Il est à noter que nnotre design suppose que le logiciel finale utilisera le casting pour réutiliser certaines classes/méthodes facilement.
     </p>
     <h2>
         Tâche 1</h2>
@@ -153,7 +154,7 @@
     <p>/*étant donnée que nos dates sont en timestamp, il faut comparer le résultat à la durée de 21 jours en secondes*/</p>
     <h4>Un paquebot peut être assigné à plusieurs itinéraires tant qu'ils ne se chevauchent pas</h4>        
     <p>context CompagnieCroisiere <br/>def allVoyage:set(Voyage) = self.DescriptionCroisiere.Voyage 
-    <br/>inv: allVoyage->forAll(v:Voyage | v.dateHeureDepart &#60 v.dateHeureArrivee) 
+    <br/>inv: allVoyage->forAll( v:Voyage | v.dateHeureDepart &#60 v.dateHeureArrivee) 
     <br/>inv: allVoyage->forAll( v1: Voyage, v2:Voyage | if v1.Paquebot = v2.Paquebot then v1.dateHeureDepart &#62 v2.dateHeureArrivee or v1.dateHeureArrivee &#60 v2.dateHeureDepart)</p>    
     <p>/*on confirme que tous les voyages ont une heure d'arrivée après l'heure de départ et ensuite on confirme que toutes les paires possibles de voyages utilisant le même paquebot n'ont pas de chevauchement en vérifiant que le premier voyage part après le deuxième et vice-versa*/</p>
     <h4>Réserver ne peut se faire que pour un siège/cabine libre</h4>        
