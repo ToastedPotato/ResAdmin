@@ -69,7 +69,7 @@
                     Design du logiciel
                 </td>
                 <td>
-                    Diagramme de classes, Diagramme de paquets (50%)
+                    Diagramme de classes, Diagramme de paquets (50%), contraintes OCL
                 </td>
                 <td>
                     Diagrammes de séquence (50%)
@@ -77,13 +77,13 @@
             </tr>
             <tr>
                 <td class="first_col">
-                    Justification du design
+                    Qualité du design
                 </td>
                 <td>
-                    Rapport, contraintes OCL (50%)
+                    Justifications (50%) 
                 </td>
                 <td>
-                    Rapport, contraintes OCL (50%)
+                    Justifications (50%)
                 </td>
             </tr>
         </tbody>
@@ -97,6 +97,7 @@
         Nous avons supposé que toute section d'un véhicule de transport est non-vide. 
         Nous avons supposé qu'il n'y a qu'un seul véhicule de transport effectuant un certain voyage à une certaine heure (exemple, le vol LEET1337, disponible à 13h, 16h, et 22h est effectué par l'avion GIT1 à 13h, GUD2 à 16h et SCRUB3 à 22h).
         Nous avons supposé que le système limite le nombre de réservations non payées à une par client.
+        Étant donné que ce n'était pas spécifié, nous avons assumé qu'un client a jusqu'à 24h avant le départ pour réserver une place dans un voyage.
     </p>
     <h2>
         Tâche 1</h2>
@@ -107,112 +108,92 @@
         <li>Fichiers: <a href="ClassDiagram.vpp">Diagramme de classes</a>, <a href="DSS2_part2.vpp">Diagrammes de séquence</a>, <a href="PackageDiagram.vpp">Diagramme de paquets</a></li>        
         <li>Le projet DSS2_part2.vpp contient tout les Diagrammes de séquence, il suffit d'utiliser le navigateur de projet dans la barre de tâches à gauche de la fenêtre de Visual Paradigm ou le "Project Browser" dans le menu "View" de Visual Paradigm.</li>
     </ul>
-    <img src="DiagrammedeClasse.jpg" width="900px" alt="Diagramme de classes" />
+    <img src="DiagrammedeClasses.jpg" width="900px" alt="Diagramme de classes" />
     <ul>        
-        <li>Les parties réutilisables sont les classes suivantes: View, Control, InterfaceUsager, OutilsAdmin, Destination, Distributeur, Parcours, Voyage, Transport, Section, Place, Réservation, Confirmation.</li>
-    </ul>
-    <img src="SS_CreationModif_Admin.jpg" width="900px" alt="DSS création/modification (admin)" />
-    <ul>        
-        <li>Ici, on ilustre de comportement typique du système lors de la création ou la modification d'une instance des différentes classes conceptuelles par l'admin. Le comportement étant très similaire pour beaucoup de classes, nous avons décidé de ne faire qu'un schéma pour les résumer.</li>
-    </ul>
-    <img src="SS_Suppression_Admin.jpg" width="900px" alt="DSS Supprimer (Admin)" />
-    <ul>        
-        <li>Ici, on ilustre de comportement typique du système lors de la suppression d'une instance des différentes classes conceptuelles par l'admin. Le comportement étant très similaire pour beaucoup de classes, nous avons décidé de ne faire qu'un schéma pour les résumer.</li>
-    </ul>
-    <img src="SS-Consulter Vols.jpg" width="900px" alt="DSS Consulter les vols (Admin)" />
-    <img src="SS-Modifier Réservation.jpg" width="900px" alt="DSS Modifier une réservation" />
-    <img src="SS-Paiement de siège.jpg" width="900px" alt="DSS Payer un siège" />
-    <img src="SS-Réservation.jpg" width="900px" alt="DSS Réserver (Client)" />
-    <img src="SS-Annuler Réservation.jpg" width="900px" alt="DSS Annuler une réservation (Client)" />
-    <img src="SS-Vérification de Vol disponible.jpg" width="900px" alt="DSS Consulter les vols disponibles (Client)" />
-    <h3>Contrats</h3>
-    <h4>Réserver</h4>        
-    <p> Opération:  setReservation(reservation:Reservation)</p>
-    <p> référence:  réserver un siège</p>
-    <p> Préconditions:  
-    <p>-le siège est libre (siege.reservation == null)</p>
-    <p>-il reste au moins 24h avant le départ (Vol.dateHeureDepart - new DateTime() >= (24*60*60) secondes)</p>
-    <p> Postcontidions:</p>
-    <p>-le siège est réservé pour 24 heures (siege.reservation != null)</p>
-    <p>-une instance de réservation est créee (new Reservation(idVol:string, numeroVol:int, priorite:string))</p>
-    <p>-la réservation est ajoutée à la liste de réservations dans Database</p>
-    <h4>Paiement</h4>        
-    <p> Opération:  setConfirmation(confirmation:Confirmation)</p>
-    <p> référence:  payer un siège</p>
-    <p> Préconditions:  
-    <p>-le siège est réservé (siege.reservation != null)</p>
-    <p>-le Client à l numéro de réservation conrrespondant</p>
-    <p>-il reste au moins 24h avant le départ (Vol.dateHeureDepart - new DateTime() >= (24*60*60) secondes)</p>
-    <p>-la réservation (et, par extension, le siège) n'a pas encore été payée (reservation.getConfirmation() == null)</p>
-    <p> Postcontidions:</p>
-    <p>-une instance de confirmation est crée (new Confirmation(modePaiement:string, infoClient:string))</p>
-    <p>-la réservation a été payée (reservation.getConfirmation() != null)</p>
-    <h4>Annuler</h4>        
-    <p> Opération:  cancelReservation()</p>
-    <p> référence:  annuler une réservation</p>
-    <p> Préconditions:  
-    <p>-le siège est réservé (siege.reservation != null)</p>
-    <p>-il reste au moins 24h avant le départ (Vol.dateHeureDepart - new DateTime() >= (24*60*60) secondes)</p>
-    <p> Postcontidions:</p>
-    <p>-le siège est de nouveau libre (siege.reservation == null)</p>
-    <p>-l'instance de réservation n'est plus référencée dans database.listeReservation</p>
-    <h4>Modifier réservation</h4>        
-    <p> Opération:  cancelReservation() suivi de setReservation(reservation:Reservation)</p>
-    <p> référence:  modifier une réservation, annuler une réservation</p>
-    <p> Préconditions:  
-    <p>-le siège est réservé (siege.reservation != null)</p>
-    <p>-il reste au moins 24h avant le départ (Vol.dateHeureDepart - new DateTime() >= (24*60*60) secondes)</p>
-    <p> Postcontidions:</p>
-    <p>-le siège est de nouveau libre (siege.reservation == null)</p>
-    <p>-l'instance de réservation est mise à jour et associée à un nouveau siège (siege2.reservation != null)</p>
-    
-    <h2>Tâche 2</h2>
-    <p>
-        Design du logiciel
-    </p>
-    <ul>
-        <li>Fichiers: <a href="ClassDiagram.vpp">Diagramme de classes</a>, <a href="DSS2.vpp">Diagrammes de séquence</a>, <a href="PackageDiagram.vpp">Diagramme de paquets</a>, <a href="StateDiagram.vpp">Diagrammes d'état (cycle de vie d'un siège)</a></li>        
-        <li>Le projet DSS2.vpp contient tout les diagrammes de séquence, il suffit d'utiliser le navigateur de projet dans la barre de tâches à gauche de la fenêtre de Visual Paradigm ou le "Project Browser" dans le menu "View" de Visual Paradigm. Les diagrammes de séquence ont usuellement le préfixe "S-" dans leur nom.</li>
+        <li>Les parties réutilisables sont les classes suivantes: View, Control, InterfaceUsager, OutilsAdmin, Destination, Distributeur, Parcours, Voyage, Transport, Section, Place, Réservation, Confirmation. Ils contiennent les attributs et méthodes de base pour pouvoir gérer les réservation pour un système de transport quelconque.</li>
     </ul>
     <img src="DiagrammePaquets.jpg" width="900px" alt="Diagramme de Paquets" />
     <ul>        
-        <li>Conformément à notre hypothèse, nous avons décidé de séparer le système en 2 paquets: le paquet interface chargé principalement de gérer les interactions avec l'usager (l'acteur) et le paquet Data contenant uniquement des données (prix, réservations, confirmations de paiements, etc.) afin de partager le mieux possible les responsabilités de contrôleur et d'expert d'information: les classes Control et Database se partagent la responsabilité de contrôleur et les classes du paquet Data se partagent la responsabilité d'expert d'information.</li>
+        <li>Ici, nous avons appliqué le acyclic Dependency Principle; il n'y a pas de cycle formé par les dépendances entre les paquets Interface, Destination, Compagnies et Réservation. Nous avons appliqué le Common Reuse Principle pour la ségrégation des classes en différents paquets, par exemple: View, Control, InterfaceUsager et OutilsAdmin doivent coopérer pour interagir avec l'usager, donc nous les avons réunis dans le paquet Interface.</li>
     </ul>
-    <img src="DiagrammedeClasses.jpg" width="900px" alt="Diagramme de Classes" />
+    <img src="VerificationParcours.jpg" width="900px" alt="Diagramme de séquence de la consultation de vols" />
     <ul>        
-        <li><p>Malheureusement, nous avons dû introduire un certain couplage entre certaines classes (surtout Database, par exemple). Database doit pouvoir correctement déléguer les tâches de recherche d'information et de création/modification/suppression d'instances de classes, ainsi cette connexion aux autres classes est nécessaire.</p>  
-        <p>Les classes du paquet Data (DescriptionVol, Avion, Section, etc.) se partagent le rôle d'expert d'information pour certaines information pour certaines données afin de limiter l'usage de la mémoire/la répétition de données : par exemple, étant donné que tous les siège d'une section ont le même tarif, la donnée de "tarif" est contenue uniquement dans les instances de la classe Section. Ceci permet une certaine cohésion entre les classes ordonnées de cette façon (par exemple: Compagnie, Avion, Section, Siege, Reservation et Confirmation).</p>
-        <p>Pour maintenir ce genre "d'hierarchie", les classes du paquet Data ont la responsabilité de créateur d'instance pour les classes directement en-dessous d'elles dans l'hierarchie: par exemple, DescriptionVol est le créateur des instances de la classe Vol -car DescriptionVol décrit plusieurs Vols, et, ainsi les "contient" du point de vue design-, Avion est le créateur des instances de Section -Évidemment, l'avion contient des sections-.</p></li>
+        <li>L'usager choisit de vérifier les vols disponibles. Le diagramme illustre le comportement du système après que le contrôleur (Control) ait averti l'instance d'InterfaceUsager d'appeller la méthode findParcours().</li>
+        <li>Nous n'avions pas besoin de faire un diagramme différent pour les vols d'avions, itinéraires de paquebot et trajets de train car, par souci de réutilisabilité, findParcours() n'utilise que des méthodes et attributs présents dans les modules réutilisables (Distributeur, Parcours et Voyage dans ce cas-ci) tout en satisfaisant les besoins dans l'énoncé (après avoir trouvé les instances de Distributeur, Parcours, Voyage et Transport demandées, l'instance d'Interface usager a toutes les informations requises pour donner tous les détails demandés).</li>
     </ul>
-    <img src="S-Annuler Reservation.jpg" width="900px" alt="Diagramme de séquence: annulation d'une réservation" />
+    <img src="Reserver.jpg" width="900px" alt="Diagramme de séquence de Réservation" />
     <ul>        
-        <li>Pour  les diagrammes de séquence la database est le centre de contrôle des données. Elle communique avec le contrôleur et la vue (view),C’est à partir de celle-ci qu’on peut faire des recherches, obtenir des informations et les modifier.Ainsi tous les actions qu’effectueront les utilisateurs causeront des changements dans la base de données. Les autres classes participeront au modifications des informations retenues.</li>
+        <li>L'usager choisit de réserver une place disponible dans un voyage. Le diagramme illustre le comportement du système après que le contrôleur (Control) ait averti l'instance d'InterfaceUsager d'appeller la méthode createReservation().</li>
+        <li>Nous n'avions pas besoin de faire un diagramme différent pour la réservation de siège ou cabine car, createReservation() n'utilise que des méthodes et attributs présents dans les modules réutilisables. De plus, pour gérer correctement les différences de délais de modification/annulation en siège (24h) et cabine (72h), l'attribut delai de l'instance de Reservation sera initialisé à la valeur appropriée selon la classe (siege ou cabine) de l'instance à laquelle la réservation sera associée.</li>
     </ul>
-    <img src="S-Modifier Reservation.jpg" width="900px" alt="Diagramme de séquence: modification d'une réservation" />
+    <img src="Payer.jpg" width="900px" alt="Diagramme de séquence de Paiement" />
     <ul>        
-        <li>Pour la modification de la réservation,on se rend compte qu’on doit vérifier la disponibilité d’un nouveau vol et annuler la présente reservation du présent siège pour l’associer à un autre. On peut donc  réutiliser les diagrammes que nous avons déjà fait.</li>
+        <li>L'usager choisit de payer une place qu'il a réservé dans un voyage. Le diagramme illustre le comportement du système après que le contrôleur (Control) ait averti l'instance d'InterfaceUsager d'appeller la méthode pay().</li>
+        <li>Nous n'avions pas besoin de faire un diagramme différent pour le paiement d'un siège ou d'une cabine car, pay() n'utilise que des méthodes et attributs présents dans Reservation et Confirmation, donc les différences entre les sièges et cabines n'ont pas d'importance dans ce cas-ci.</li>
     </ul>
-    <img src="S-Payer une siège.jpg" width="900px" alt="Diagramme de séquence: paiement d'une réservation/siège" />
-    <img src="S-Réserver un siège.jpg" width="900px" alt="Diagramme de séquence: annulation d'une réservation" />
-    <img src="S-Vérification des vols disponible.jpg" width="900px" alt="Diagramme de séquence: annulation d'une réservation" />
-    <img src="SiegeDiagrammeEtat.jpg" width="900px" alt="Diagramme d'état (cycle de vie d'un siège)" />
+    <img src="ModifierReservation.jpg" width="900px" alt="Diagramme de séquence de Modification de Réservation" />
     <ul>        
-        <li>Plusieurs actions de transition demandent une vérification de la date de réservation ou de la date de départ du vol afin de prévenir les interaction avec le siège moins de 24 heures avant le départ. Ici, l'action "vérouillage" indique que le statut du siège est maintenant fixe et ne peut plus est modifié par le client.</li>
+        <li>L'usager choisit de modifier sa réservation. Le diagramme illustre le comportement du système après que le contrôleur (Control) ait averti l'instance d'InterfaceUsager d'appeller la méthode modifierReservation().</li>
+        <li>Nous n'avions pas besoin de faire un diagramme différent pour le paiement d'un siège ou d'une cabine car, grâce à la réutilisabilité de Reservation, le processus reste le même peut importe de délai de modification de réservation imposé par le type de place réservé.</li>
+    </ul>
+    <img src="AnnulerReservation.jpg" width="900px" alt="Diagramme de séquence d'Annulation de Réservation" />
+    <ul>        
+        <li>L'usager choisit d'annuler sa réservation. Le diagramme illustre le comportement du système après que le contrôleur (Control) ait averti l'instance d'InterfaceUsager d'appeller la méthode supprimerReservation().</li>
+        <li>Nous n'avions pas besoin de faire un diagramme différent pour l'annulation de la réservation d'un siège ou d'une cabine car, grâce à la réutilisabilité de Reservation, le processus reste le même peut importe de délai de modification d'une réservation imposé par le type de place réservé.</li>
     </ul>
     <h3>Contraintes OCL</h3>
-    <h4>L'aéroport de départ et d'arrivée sont différents</h4>        
-    <p>context DescriptionVol inv:<br/>self.getAeroportDepart() <> self.getAeroportArrivee()</p>
-    <h4>La partie alphabétique de l'ID d'un vol est unique à chaque compagnie et la partie numérique est unique à chaque vol au sein de la même compagnie.</h4>        
-    <p>context Database inv:<br/>self.Compagnie->isUnique(Compagnie.DescriptionVol->orderedBy(self.Compagnie.DescriptionVol.numero)->first().id)</p>
-    <p>/*on confirme que le premier élément dans la liste de descriptions de Vols de chaque compagnie a un ID alphabétique unique*/</p>
-    <p>context Compagnie inv:<br/>def: first:string = self.DescriptionVol->orderedBy(self.DescriptionVol.numero)->first()<br/>self.DescriptionVol.id->excluding(first.id)->size() = 0</p>
+    <h4>Le port de départ et d'arrivée sont identiques, l'itinéraire ne doit pas durer plus de 21 jours</h4>        
+    <p>context DescriptionCroisiere <br/>inv: self.destinationDepart = self.destinationArrivee()
+    <br/>inv: self.Voyage->forAll(dateHeureArrivee - dateHeureDepart <= (21*24*60*60))</p>
+    <p>/*étant donnée que nos dates sont en timestamp, il faut comparer le résultat à la durée de 21 jours en secondes*/</p>
+    <h4>Un paquebot peut être assigné à plusieurs itinéraires tant qu'ils ne se chevauchent pas</h4>        
+    <p>context CompagnieCroisiere <br/>inv: </p>
+    
     <p>/*on confirme ensuite qu'au sein d'une même compagnie, toutes les descriptions de vol partagent le même ID alphabétique, ceci, combiné avec la contraite que le premier élément DescriptionVol.id de chaque Compagnie soit unique permet d'implémenter la contrainte "la partie alphabétique de l'ID d'un vol est unique à chaque compagnie"*/</p>
-    <p>context Compagnie inv:<br/>self.DescriptionVol->isUnique(numero)</p>
-    <p>/*Ici, on confirme qu'au sein d'une même compagnie toutes les descriptions de vol ont un numéro unique*/</p>
-    <h4>Tous les sièges d'une même section ont le même prix dans la même compagnie</h4>        
-    <p>Ici, nul besoin de faire une contrainte OCL; le design de nos classe et de notre domaine confirme cette contraite par défaut; étant donné que la donnée "tarif" est stockée uniquement dans l'instance section englobant toutes les instances siege qui lui sont associées, il est impossible pour une section de contenir un siege avec une valeur "tarif" différente. De plus, il n'y a que 4 types de "tarifs" (modifiant le prix de la Compagnie), chacun associé à un type de section spécifique, assurant que toutes les sections de même type ont le même "tarif".</p>
-    <h4>Réserver ne peut se faire que pour un siège libre. Identifiez la postcondition de l'opération réserver()</h4>        
-    <p>context siege::setReservation(reservation:Reservation)<br/>pre: self.Reservation->size() = 0<br/>post: self.Reservation->size() = 1</p>
-    <p>/*Dans la ligne de précondition, on vérifie que l'ensemble siege.Reservation est vide; ainsi qu'il n'y a pas d'instance réservation attachée au siège. Celui-ci est ainsi considéré libre. Dans la postcondition, on confirme qu'il n'y a qu'une seule instance de réservation attachée à un siège: un seul client pour un siège.*/</p>
+    <h4>Réserver ne peut se faire que pour un siège/cabine libre</h4>        
+    <p>context Place::setReservation(reservation:Reservation)<br/>pre: self.Reservation->size() = 0<br/>post: self.Reservation->size() = 1</p>
+    <p>/*Siege et Cabine utilisent la même opération que leur classe mère, Place, pour l'assignation d'une réservation, donc la mise à jour revient à tout simplement changer le contexte de la contrainte*/</p>
+    <h2>Tâche 2</h2>
+    <p>
+        Qualité du design
+    </p>
+    <h3>Couplage et Cohésion</h3>
+    <h4>*sous-section si besoin*</h4>        
+    <p>*blah blah blah*</p>
+    <h3>Fardeau</h3>
+    <h4>*sous-section si besoin*</h4>        
+    <p>*blah blah blah*</p>
+    <h3>Graphe IA</h3>
+    <img src="AnnulerReservation.jpg" width="900px" alt="Diagramme de séquence d'Annulation de Réservation" />
+    <h4>calculs</h4>        
+    <ul>
+    <li>Destination: 4 classes dans Compagnie et 2 dans Interface en dépendent donc I = 0/(4+2) = 0, A = 0 car Destination n'a aucune classe abstraite</li>
+    <li>Reservation: 3 classes dans Compagnie et 2 dans Interface en dépendent donc I = 0/(3+2) = 0, A = 0 car Reservation n'a aucune classe abstraite</li>
+    <li>Compagnie: 2 classes dans Interface en dépendent et possède 7 classes dépendant d'autres paquets donc I = 7/(7+2) = 0.78, A = 0 car Compagnie n'a aucune classe abstraite</li>
+    <li>Interface: possède 2 classes dépendant d'autres paquets donc I = 2/2 = 1, A = 0 car Compagnie n'a aucune classe abstraite</li>
+    </ul>
+    <h4>Discussion du graphe</h4>
+    <p>Notre paquet Interface est idéal comme point d'entrée du programme (méthode main) car sa valeur de Distance est 0 et sa valeur A est 0; c'est ce qu'on veut vu qu'Interface doit se charger des interactions avec l'usager. Compagnie s'approche aussi de cet "idéal" avec une valeur D de 0.22 et A = 0. Par contre Reservation et Destination sont loin d'être idéaux avec leur valeurs D de 1 et A de 0. Ceci est probablement causé par le fait que les classes de ces paquets sont instantiables, par souci de réutilisabilité sans aucune extension (nous voulions un programme "usable right out of the box").</p>
+    <h3>Application des principes de conception</h3>
+    <h4>Application des principes SOLID</h4>        
+    <ul>
+    <li>Notre design applique systèmatiquement de Single Responsibility principle. En effet, la création de sous-classes pour nos modules réutilisables n'est causée que par la prise en charge d'une nouvelle responsabilité: chaque sous-type de compagnie a été créée pour prendre en charge un type spécifique de produit (ex.: vente de croisières), chaque sous-type de Section est créée pour prendre en charge un type de tarif spécifique, chaque sous-type de parcours existe pour la description d'un type d'itinéraire spécifique (croisière, vol ou trajet), la sous-classe OutilsAdmin doit son existence au fait qu'elle a la responsabilité de fournir les fonctionalités d'administrateur.</li>
+    <li>Notre design n'applique pas exactement le Open/Close principle. Tel qu'expliqué dans notre discussion du SRP, nous procédons systématiquement à l'extension pour changer le comportement de nos classes. Par contre, ces extensions sont faites sur des classes concrètes, ce qui viole une des conditions de l'OCP.</li>
+    <li>Notre design respecte aussi le principe de subsitution de Liskov. Étant donné qu'aucunes de nos sous-classes ne redéfinissent les méthodes de leur classe mère, toutes nos sous-classes sont garanties d'être conformes aux spécifications de leur classe mère.</li>
+    <li>Malheureusement, nous n'appliquons pas très fidèlement de Dependency Inversion Principle. Étant donné que nous voulions que notre design soit le plus général possible (essentiellement, utilisable/fonctionnel sans aucune extension des modules réutilisables), il a fallu que les modules réutilisables soient des classes concrètes (donc instantiables et utilisables par le système). Malheureusement, ces modules sont les classes mères des modules spécifiques aux besoins de ce scénario.</li>
+    <li>Le Interface Segregation Principle n'est pas applicable à notre situation vu que notre design n'utilise pas d'interfaces (ou de classes abstraites). Une malheureuse conséquence de notre non-respect du DIP.</li>
+    </ul>
+    <h4>Application des principes de couplage de paquets</h4>
+    <ul>
+    <li>Notre design applique le Acyclic Dependency principle car les dépendances entre nos paquets ne créent aucun cycle.</li>
+    <li>Notre design applique le Stable Dependencies principle car nos paquets dépendent uniquement de paquets plus stables. En effet, nous voyons qu'Interface (I=1) dépend de Compagnie (I=0,78), Destination (I=0) et Reservation (I=0) (tous des paquets plus stables qu'Interface) et que Compagnie (I=0,78) dépend de Destination (I=0) et Reservation (I=0) (encore des paquets plus stables que Compagnie).</li>
+    <li>Notre design n'est pas fidèle au Abstract Dependencies Principle car nos paquets les plus stables (Destination et Reservation) n'ont que des classes concrètes. Une malheureuse conséquence de notre non-respect du DIP.</li>
+    </ul>
+    <h4>Application des principes de cohésion de paquets</h4>
+    <ul>
+    <li>Notre design applique en partie le Release Reuse Equivalency Principle. En effet, 2 (Interface, Reservation) de nos 4 paquets sont réutilisables en entier. Malheureusement, à cause des sous-classes spécifique au scénario du DM2 ajoutées aux paquets Destination et Compagnie, ceux-ci ne pourraient peut-être pas être réutilisables dans toutes les situations.</li>
+    <li>Notre design applique le Common Reuse Principle car nos paquets ne contiennent que des classes faisant preuve de cohésion fonctionnelle (en d'autres mots, des classes ayant des fonctions reliées). Par exemple, le paquet Interface ne contient que des classes ayant des méthodes et attributs liées aux interactions avec l'usager (View est responsable de l'affichage d'informations à l'écran de l'usager, Control reçoit les entrées de l'usager et en averti InterfaceUsager qui s'occupe d'exécuter l'action demandée), le paquet Compagnie ne contient que des classes décrivant les différents itinéraires offerts par une compagnie ainsi que les transporteurs qu'elle contient.</li>
+    <li>Notre Design ne respecte pas complètement le Common Closure principle. Un changement dans Interface n'affecterait pas les 3 autres paquets, mais étant donné que Compagnie et Interface utilisent Destination et Reservation, il devient difficile de modifier ces 2 paquets sans affecter Interface et Compagnie. Ce serait comme espérer de changer la spécification de la classe String de Java sans affecter aucune autre classe.</li>
+    
 </body>
 </html>
