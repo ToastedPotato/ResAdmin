@@ -152,9 +152,10 @@
     <br/>inv: self.Voyage->forAll(dateHeureArrivee - dateHeureDepart <= (21*24*60*60))</p>
     <p>/*étant donnée que nos dates sont en timestamp, il faut comparer le résultat à la durée de 21 jours en secondes*/</p>
     <h4>Un paquebot peut être assigné à plusieurs itinéraires tant qu'ils ne se chevauchent pas</h4>        
-    <p>context CompagnieCroisiere <br/>inv: </p>
-    
-    <p>/*on confirme ensuite qu'au sein d'une même compagnie, toutes les descriptions de vol partagent le même ID alphabétique, ceci, combiné avec la contraite que le premier élément DescriptionVol.id de chaque Compagnie soit unique permet d'implémenter la contrainte "la partie alphabétique de l'ID d'un vol est unique à chaque compagnie"*/</p>
+    <p>context CompagnieCroisiere <br/>def allVoyage:set(Voyage) = self.DescriptionCroisiere.Voyage 
+    <br/>inv: allVoyage->forAll(v:Voyage | v.dateHeureDepart &#60 v.dateHeureArrivee) 
+    <br/>inv: allVoyage->forAll( v1: Voyage, v2:Voyage | if v1.Paquebot = v2.Paquebot then v1.dateHeureDepart &#62 v2.dateHeureArrivee or v1.dateHeureArrivee &#60 v2.dateHeureDepart)</p>    
+    <p>/*on confirme que tous les voyages ont une heure d'arrivée après l'heure de départ et ensuite on confirme que toutes les paires possibles de voyages utilisant le même paquebot n'ont pas de chevauchement en vérifiant que le premier voyage part après le deuxième et vice-versa*/</p>
     <h4>Réserver ne peut se faire que pour un siège/cabine libre</h4>        
     <p>context Place::setReservation(reservation:Reservation)<br/>pre: self.Reservation->size() = 0<br/>post: self.Reservation->size() = 1</p>
     <p>/*Siege et Cabine utilisent la même opération que leur classe mère, Place, pour l'assignation d'une réservation, donc la mise à jour revient à tout simplement changer le contexte de la contrainte*/</p>
