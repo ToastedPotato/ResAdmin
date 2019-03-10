@@ -111,7 +111,7 @@
         <li>Fichiers: <a href="ClassDiagram.vpp">Diagramme de classes</a>, <a href="DSS2_part2.vpp">Diagrammes de séquence</a>, <a href="PackageDiagram.vpp">Diagramme de paquets</a></li>        
         <li>Le projet DSS2_part2.vpp contient tous les diagrammes de séquence, il suffit d'utiliser le navigateur de projet dans la barre de tâches à gauche de la fenêtre de Visual Paradigm ou le "Project Browser" dans le menu "View" de Visual Paradigm.</li>
     </ul>
-    <img src="DiagrammedeClasses.jpg" width="900px" alt="Diagramme de classes" />
+    <img src="DiagrammedeClasses.jpg" width="1300px" alt="Diagramme de classes" />
     <ul>        
         <li>Les parties réutilisables sont les classes suivantes: View, Control, InterfaceUsager, OutilsAdmin, Destination, Distributeur, Parcours, Voyage, Transport, Section, Place, Reservation, Confirmation. Elles contiennent les attributs et méthodes de base pour pouvoir gérer les réservations pour un système de transport quelconque. Idéalement, il aurait fallu extraire des interfaces de ces classes, mais nous voulions que notre programme soit réutilisable au point d'être exécutable et utilisable pour un autre système de réservation sans aucune modification des parties réutilisables.</li>
         <li>Étant donné que le système doit interagir avec un usager et imprimer des informations à l'écran, nous avons décidé d'implémenter un modèle MVC rudimentaire: View se charge d'afficher de l'information, Control reçoit les entrées de l'usager et délègue le traitement de l'entrée à la méthode/au module approprié et InterfaceUsager (avec sa sous-classe OutilsAdmin) fait office de modèle et ainsi contient toutes les méthodes et données requises pour répondre aux besoins de l'usager.</li>
